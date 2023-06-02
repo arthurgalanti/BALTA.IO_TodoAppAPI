@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Todo.Domain.Entities;
 
-namespace TodoItem.Domain.Entities
+namespace Todo.Domain.Entities
 {
     public class TodoItem : Entity
     {
