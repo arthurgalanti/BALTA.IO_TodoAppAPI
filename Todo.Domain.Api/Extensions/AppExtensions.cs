@@ -33,11 +33,11 @@ public static class AppExtensions
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = "http://securetoken.google.com/todoapi-7b517";
+                options.Authority = "https://securetoken.google.com/todoapi-7b517";
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "http://securetoken.google.com/todoapi-7b517",
+                    ValidIssuer = "https://securetoken.google.com/todoapi-7b517",
                     ValidateAudience = true,
                     ValidAudience = "todoapi-7b517",
                     ValidateLifetime = true
