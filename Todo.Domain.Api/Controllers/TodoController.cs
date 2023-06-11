@@ -57,7 +57,6 @@ public class TodoController : ControllerBase
     )
     {
         return repository.GetByPeriod("ArthurGalanti", DateTime.Now.Date, false);
-
     }
     
     [Route("done/tomorrow")]

@@ -1,19 +1,9 @@
-using System.Security.Cryptography.Xml;
-using Microsoft.EntityFrameworkCore;
-using Todo.Domain.Handlers;
-using Todo.Domain.Infra.Contexts;
-using Todo.Domain.Infra.Repositories;
-using Todo.Domain.Repositories;
+using Todo.Domain.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
-builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
-// builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("CONNECTION_STRING")));
-builder.Services.AddTransient<ITodoRepository, TodoRepository>();
-builder.Services.AddTransient<TodoHandler, TodoHandler>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.ConfigureServices();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -23,11 +13,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
-
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
