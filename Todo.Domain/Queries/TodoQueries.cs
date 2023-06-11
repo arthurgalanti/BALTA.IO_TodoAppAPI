@@ -24,7 +24,7 @@ public static class TodoQueries
     {
         return x => 
             x.User == user && 
-            x.Done == true &&
+            x.Done == done &&
             x.Date.Date == date.Date;
     }
 }
