@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Todo.Domain.Commands;
 using Todo.Domain.Commands.Contracts;
 using Todo.Domain.Entities;
@@ -9,6 +10,7 @@ namespace Todo.Domain.Api.Controllers;
 
 [ApiController]
 [Route("v1/todos")]
+[Authorize]
 public class TodoController : ControllerBase
 {
     [Route("")]
@@ -17,7 +19,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetAll("ArthurGalanti");
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetAll(user);
     }
     
     [Route("done")]
@@ -26,8 +29,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetAllDone("ArthurGalanti");
-
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetAllDone(user);
     }
     
     [Route("undone")]
@@ -36,8 +39,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetAllUndone("ArthurGalanti");
-
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetAllUndone(user);
     }
     
     [Route("done/today")]
@@ -46,8 +49,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetByPeriod("ArthurGalanti", DateTime.Now.Date, true);
-
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetByPeriod(user, DateTime.Now.Date, true);
     }
     
     [Route("undone/today")]
@@ -56,7 +59,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetByPeriod("ArthurGalanti", DateTime.Now.Date, false);
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetByPeriod(user, DateTime.Now.Date, false);
     }
     
     [Route("done/tomorrow")]
@@ -65,7 +69,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetByPeriod("ArthurGalanti", DateTime.Now.Date.AddDays(1), true);
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetByPeriod(user, DateTime.Now.Date.AddDays(1), true);
     }
     
     [Route("undone/tomorrow")]
@@ -74,7 +79,8 @@ public class TodoController : ControllerBase
         [FromServices]ITodoRepository repository
     )
     {
-        return repository.GetByPeriod("ArthurGalanti", DateTime.Now.Date.AddDays(1), false);
+        var user = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        return repository.GetByPeriod(user, DateTime.Now.Date.AddDays(1), false);
     }
     
     [Route("")]
@@ -84,7 +90,7 @@ public class TodoController : ControllerBase
         [FromServices]TodoHandler handler
     )
     {
-        command.User = "ArthurGalanti";
+        command.User = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
         return (GenericCommandResult)handler.Handle(command);
     }
     
@@ -95,7 +101,7 @@ public class TodoController : ControllerBase
         [FromServices]TodoHandler handler
     )
     {
-        command.User = "ArthurGalanti";
+        command.User = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
         return (GenericCommandResult)handler.Handle(command);
     }
     
@@ -106,7 +112,7 @@ public class TodoController : ControllerBase
         [FromServices]TodoHandler handler
     )
     {
-        command.User = "ArthurGalanti";
+        command.User = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
         return (GenericCommandResult)handler.Handle(command);
     }
     
@@ -117,7 +123,7 @@ public class TodoController : ControllerBase
         [FromServices]TodoHandler handler
     )
     {
-        command.User = "ArthurGalanti";
+        command.User = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
         return (GenericCommandResult)handler.Handle(command);
     }
 }
