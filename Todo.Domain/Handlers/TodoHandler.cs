@@ -9,7 +9,10 @@ namespace Todo.Domain.Handlers
 {
     public class TodoHandler :
     Notifiable<Notification>,
-     IHandler<CreateTodoCommand>
+    IHandler<CreateTodoCommand>,
+    IHandler<UpdateTodoCommand>,
+    IHandler<MarkTodoAsDoneCommand>,
+    IHandler<MarkTodoAsUndoneCommand>
     {
 
         private readonly ITodoRepository _repository;
@@ -33,6 +36,66 @@ namespace Todo.Domain.Handlers
 
             // Notificar o usuario
             return new GenericCommandResult(true, "Tarefa salva", todo);
+        }
+
+        public ICommandResult Handle(UpdateTodoCommand command)
+        {
+            // Fail Fast Validation
+            command.Validate();
+            if (!command.IsValid)
+                return new GenericCommandResult(false,"Ops, parece que sua tarefa está errada", command.Notifications);
+
+            // Recupera o TodoItem (Reidratação)
+            var todo = _repository.GetById(command.Id, command.User);
+
+            // Altera o título
+            todo.UpdateTitle(command.Title);
+            
+            // Salva no banco
+            _repository.Update(todo);
+
+            // Notificar o usuario
+            return new GenericCommandResult(true, "Tarefa salva", todo);
+        }
+
+        public ICommandResult Handle(MarkTodoAsDoneCommand command)
+        {
+            // Fail Fast Validation
+            command.Validate();
+            if (!command.IsValid)
+                return new GenericCommandResult(false,"Ops, parece que sua tarefa está errada", command.Notifications);
+            
+            // Recupera o TodoItem (Reidratação)
+            var todo = _repository.GetById(command.Id, command.User);
+
+            // Marca como concluído 
+            todo.MarkAsDone();
+            
+            // Salva no banco
+            _repository.Update(todo);
+
+            // Notificar o usuario
+            return new GenericCommandResult(true, "Tarefa foi marcada como concluída", todo);
+        }
+
+        public ICommandResult Handle(MarkTodoAsUndoneCommand command)
+        {
+            // Fail Fast Validation
+            command.Validate();
+            if (!command.IsValid)
+                return new GenericCommandResult(false,"Ops, parece que sua tarefa está errada", command.Notifications);
+            
+            // Recupera o TodoItem (Reidratação)
+            var todo = _repository.GetById(command.Id, command.User);
+
+            // Marca como concluído 
+            todo.MarkAsUndone();
+            
+            // Salva no banco
+            _repository.Update(todo);
+
+            // Notificar o usuario
+            return new GenericCommandResult(true, "Tarefa foi marcada com não concluída", todo);
         }
     }
 }
