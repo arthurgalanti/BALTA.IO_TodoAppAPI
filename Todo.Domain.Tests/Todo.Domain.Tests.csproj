@@ -19,16 +19,4 @@
     <ProjectReference Include="..\Todo.Domain\Todo.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="QueryTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="QueryTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="QueryTests\**" />
-  </ItemGroup>
-
 </Project>
